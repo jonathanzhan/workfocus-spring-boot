@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  Copyright  2014-2016 whatlookingfor@gmail.com(Jonathan)
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.whatlookingfor.modules.sys.dao.OrgDao">
+
+	<sql id="orgColumns">
+		a.id,
+		a.parent_id AS "parent.id",
+		a.parent_ids,
+		a.code,
+		a.name,
+		a.sort,
+		a.type,
+		a.level,
+		a.address,
+		a.master, 
+		a.phone,
+		a.remarks,
+		a.create_by AS "createBy.id",
+		a.create_at,
+		a.update_by AS "updateBy.id",
+		a.update_at,
+		a.del_flag,
+		p.name AS "parent.name"
+	</sql>
+	
+	<sql id="orgJoins">
+		LEFT JOIN sys_org p ON p.id = a.parent_id
+    </sql>
+	
+	<select id="get" resultType="com.whatlookingfor.modules.sys.entity.Org">
+		SELECT
+			<include refid="orgColumns"/>
+		FROM sys_org a
+		<include refid="orgJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="com.whatlookingfor.modules.sys.entity.Org">
+		SELECT
+			<include refid="orgColumns"/>
+		FROM sys_org a
+		<include refid="orgJoins"/>
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
+		ORDER BY a.code
+	</select>
+			
+	<select id="findAllList" resultType="com.whatlookingfor.modules.sys.entity.Org">
+		SELECT
+			<include refid="orgColumns"/>
+		FROM sys_org a
+		<include refid="orgJoins"/>
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
+		ORDER BY a.code
+	</select>
+	
+	<select id="findByParentIdsLike" resultType="com.whatlookingfor.modules.sys.entity.Org">
+		SELECT
+			<include refid="orgColumns"/>
+		FROM sys_org a
+		<include refid="orgJoins"/>
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL} AND a.parent_ids LIKE #{parentIds}
+		ORDER BY a.code
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO sys_org(
+			id, 
+			parent_id, 
+			parent_ids,
+			code, 
+			name, 
+			sort, 
+			type, 
+			level,
+			address, 
+			master,
+			phone, 
+			create_by,
+			create_at, 
+			update_by, 
+			update_at, 
+			remarks, 
+			del_flag
+		) VALUES (
+			#{id}, 
+			#{parent.id}, 
+			#{parentIds},
+			#{code}, 
+			#{name}, 
+			#{sort}, 
+			#{type}, 
+			#{level},
+			#{address}, 
+			#{master},
+			#{phone}, 
+			#{createBy.id},
+			#{createAt}, 
+			#{updateBy.id}, 
+			#{updateAt}, 
+			#{remarks}, 
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE sys_org SET 
+			parent_id = #{parent.id}, 
+			parent_ids = #{parentIds}, 
+			code = #{code},
+			name = #{name}, 
+			type = #{type}, 
+			level = #{level},
+			address = #{address}, 
+			master = #{master},
+			phone = #{phone}, 
+			update_by = #{updateBy.id},
+			update_at = #{updateAt}, 
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="updateParentIds">
+		UPDATE sys_org SET 
+			parent_id = #{parent.id}, 
+			parent_ids = #{parentIds}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE sys_org SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id} OR parent_ids LIKE 
+					<if test="dbName == 'oracle'">'%,'||#{id}||',%'</if>
+					<if test="dbName == 'mssql'">'%,'+#{id}+',%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%,', #{id}, ',%')</if>
+	</update>
+	
+</mapper>

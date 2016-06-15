@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  Copyright  2014-2016 whatlookingfor@gmail.com(Jonathan)
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.whatlookingfor.modules.sys.dao.MenuDao">
+	
+	<sql id="menuColumns">
+		a.id,
+		a.parent_id AS "parent.id",
+		a.parent_ids as parentIds,
+		a.name,
+		a.href,
+		a.target,
+		a.icon,
+		a.seq,
+		a.is_show,
+		a.permission,
+		a.remarks,
+		a.create_by AS "createBy.id",
+		a.create_at,
+		a.update_by AS "updateBy.id",
+		a.update_at,
+		p.name AS "parent.name",
+		a.level
+	</sql>
+	
+	<sql id="menuJoins">
+		LEFT JOIN sys_menu p ON p.id = a.parent_id
+    </sql>
+	
+	<select id="get" resultType="com.whatlookingfor.modules.sys.entity.Menu">
+		SELECT
+			<include refid="menuColumns"/>
+		FROM sys_menu a
+		<include refid="menuJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findAllList" resultType="com.whatlookingfor.modules.sys.entity.Menu">
+		SELECT
+			<include refid="menuColumns"/>
+		FROM sys_menu a
+		<include refid="menuJoins"/>
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
+		<if test="level!=null and level>0">
+			and a.level = #{level}
+		</if>
+		<if test="startLevel!=null and startLevel>0">
+			and a.level &gt;= #{startLevel}
+		</if>
+		<if test="endLevel!=null and endLevel>0">
+			and a.level &lt;= #{endLevel}
+		</if>
+		ORDER BY a.seq
+	</select>
+	
+	<select id="findByParentIdsLike" resultType="com.whatlookingfor.modules.sys.entity.Menu">
+		SELECT
+			a.id,
+			a.parent_id AS "parent.id",
+			a.parent_ids
+		FROM sys_menu a
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL} AND a.parent_ids LIKE #{parentIds}
+		ORDER BY a.seq
+	</select>
+	
+	<select id="findByUserId" resultType="com.whatlookingfor.modules.sys.entity.Menu">
+		SELECT DISTINCT
+			<include refid="menuColumns"/>
+		FROM sys_menu a
+		LEFT JOIN sys_menu p ON p.id = a.parent_id
+		JOIN sys_role_menu rm ON rm.menu_id = a.id
+		JOIN sys_role r ON r.id = rm.role_id
+		JOIN sys_role_user ur ON ur.role_id = r.id
+		JOIN sys_user u ON u.id = ur.user_id AND u.id = #{userId}
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL} AND r.del_flag = #{DEL_FLAG_NORMAL} AND u.del_flag = #{DEL_FLAG_NORMAL}
+		<if test="level!=null and level>0">
+			and a.level = #{level}
+		</if>
+		<if test="startLevel!=null and startLevel>0">
+			and a.level &gt;= #{startLevel}
+		</if>
+		<if test="endLevel!=null and endLevel>0">
+			and a.level &lt;= #{endLevel}
+		</if>
+		ORDER BY a.seq
+	</select>
+
+	<insert id="insert">
+		INSERT INTO sys_menu(
+			id, 
+			parent_id,
+			parent_ids,
+			name, 
+			href, 
+			target, 
+			icon, 
+			seq,
+			level,
+			is_show,
+			permission, 
+			create_by,
+			create_at,
+			update_by,
+			update_at,
+			del_flag
+		) VALUES (
+			#{id}, 
+			#{parent.id}, 
+			#{parentIds}, 
+			#{name}, 
+			#{href}, 
+			#{target}, 
+			#{icon}, 
+			#{seq},
+			#{level},
+			#{isShow}, 
+			#{permission}, 
+			#{createBy.id},
+			#{createAt},
+			#{updateBy.id},
+			#{updateAt},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE sys_menu SET 
+			parent_id = #{parent.id},
+			parent_ids = #{parentIds},
+			name = #{name}, 
+			href = #{href}, 
+			target = #{target},
+			level = #{level},
+			icon = #{icon}, 
+			seq = #{seq},
+			is_show = #{isShow},
+			permission = #{permission}, 
+			update_by = #{updateBy.id},
+			update_at = #{updateAt}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="updateParentIds">
+		UPDATE sys_menu SET 
+			parent_id = #{parent.id},
+			parent_ids = #{parentIds}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="updateSort">
+		UPDATE sys_menu SET 
+			seq = #{seq}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE sys_menu SET
+		del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id} OR parent_ids LIKE
+					<if test="dbName == 'oracle'">'%,'||#{id}||',%'</if>
+					<if test="dbName == 'mssql'">'%,'+#{id}+',%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%,', #{id}, ',%')</if>
+	</update>
+	
+</mapper>

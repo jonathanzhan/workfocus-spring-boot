@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  Copyright  2014-2016 whatlookingfor@gmail.com(Jonathan)
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.whatlookingfor.modules.sys.dao.UserDao">
+	
+    <sql id="userColumns">
+    	a.id,
+    	a.login_name,
+    	a.name,
+    	a.password,
+		a.user_type,
+		a.img,
+		a.create_by,
+		a.create_at,
+	  	a.last_login_at,
+	  	a.last_login_ip,
+	  	a.this_login_at,
+	  	a.this_login_ip,
+		a.employee_id as "employee.id",
+		b.code as "employee.code",
+		b.name as "employee.name",
+		b.ename as "employee.eName",
+		b.email as  "employee.email",
+		b.tel as  "employee.tel",
+		b.org_id as "employee.org.id",
+		d.code as "employee.org.code",
+		d.name as "employee.org.name",
+		d.parent_id as "employee.org.parent.id",
+		d.parent_ids as "employee.org.parentIds"
+    </sql>
+    
+    <sql id="userJoins">
+		LEFT JOIN sys_employee b ON a.employee_id = b.id
+		LEFT JOIN sys_org d ON b.org_id = d.id
+    </sql>
+	
+	<!-- 根据编号获得用户 -->
+	<select id="get" resultType="com.whatlookingfor.modules.sys.entity.User">
+		SELECT
+			<include refid="userColumns"/>
+		FROM sys_user a
+		<include refid="userJoins"/>
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="getByLoginName" resultType="com.whatlookingfor.modules.sys.entity.User" parameterType="User">
+		SELECT
+			<include refid="userColumns"/>
+		FROM sys_user a
+		<include refid="userJoins"/>
+		WHERE a.login_name = #{loginName} AND a.del_flag = #{DEL_FLAG_NORMAL}
+	</select>
+	
+	<!-- 分页查询用户信息 -->
+	<select id="findList" resultType="com.whatlookingfor.modules.sys.entity.User">
+		SELECT
+			<include refid="userColumns"/>
+		FROM sys_user a
+		<include refid="userJoins"/>
+		<if test="role != null and role.id != null and role.id != ''">
+			INNER JOIN sys_role_user ur ON ur.user_id = a.id AND ur.role_id = #{role.id}
+		</if>
+
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
+		<!-- 如果不是超级管理员，则不显示超级管理员用户 -->
+		<if test="!currentUser.admin">
+			AND a.id != '1'
+		</if>
+		<if test="employee != null">
+			<if test="employee.org !=null and employee.org.id != null and employee.org.id != ''">
+				AND (d.id = #{employee.org.id} OR d.parent_ids LIKE
+				<if test="dbName == 'oracle'">'%'||#{employee.org.id}||'%')</if>
+				<if test="dbName == 'mysql'">CONCAT('%', #{employee.org.id}, '%'))</if>
+			</if>
+			<if test="employee.name != null and employee.name != ''">
+				AND (b.name LIKE
+				<if test="dbName == 'oracle'">'%'||#{employee.name}||'%'</if>
+				<if test="dbName == 'mysql'">CONCAT('%', #{employee.name}, '%')</if>
+				OR b.ename like
+				<if test="dbName == 'oracle'">'%'||#{employee.name}||'%')</if>
+				<if test="dbName == 'mysql'">CONCAT('%', #{employee.name}, '%'))</if>
+			</if>
+			<if test="employee.code != null and employee.code != ''">
+				AND b.code LIKE
+				<if test="dbName == 'oracle'">'%'||#{employee.code}||'%'</if>
+				<if test="dbName == 'mysql'">CONCAT('%', #{employee.code}, '%')</if>
+			</if>
+		</if>
+		<if test="loginName != null and loginName != ''">
+			AND a.login_name like
+					<if test="dbName == 'oracle'">'%'||#{loginName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{loginName}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{loginName}, '%')</if>
+		</if>
+		<if test="name != null and name != ''">
+			AND a.name like
+			<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+			<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+			<if test="dbName == 'mysql'">CONCAT('%', #{name}, '%')</if>
+		</if>
+		<if test="userType !=null">
+			AND a.user_type = #{userType}
+		</if>
+		<!-- 数据范围过滤 -->
+		${sqlMap.dsf}
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.id
+			</otherwise>
+		</choose>
+	</select>
+
+	
+	<!-- 查询全部用户 -->
+	<select id="findAllList" resultType="com.whatlookingfor.modules.sys.entity.User">
+		SELECT
+			<include refid="userColumns"/>
+		FROM sys_user a
+		<include refid="userJoins"/>
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
+		<!-- 如果不是超级管理员，则不显示超级管理员用户 -->
+		<if test="!currentUser.admin">
+			AND a.id != '1'
+		</if>
+		ORDER BY a.id
+	</select>
+	
+	<!-- 查询全部用户数目 -->
+	<select id="findAllCount" resultType="long">
+		SELECT
+			COUNT(1)
+		FROM sys_user a
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
+	</select>
+	
+	<!-- 插入用户 -->
+	<insert id="insert">
+		INSERT INTO sys_user(
+			id,
+			employee_id,
+			login_name,
+			name,
+			password, 
+			user_type,
+			create_by,
+			create_at,
+			img,
+			del_flag
+		) VALUES (
+			#{id},
+			#{employee.id},
+			#{loginName},
+			#{name},
+			#{password},
+			#{userType}, 
+			#{createBy.id},
+			#{createAt},
+			#{img},
+			#{delFlag}
+		)
+	</insert>
+	
+	<!-- 更新用户 -->
+	<update id="update">
+		UPDATE sys_user SET
+			employee_id = #{employee.id},
+			login_name = #{loginName},
+			name = #{name},
+			password = #{password},
+			user_type = #{userType},
+			update_by = #{updateBy.id},
+			update_at = #{updateAt},
+			img = #{img}
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 删除用户和角色关联表数据 -->
+	<delete id="deleteUserRole">
+		DELETE FROM sys_role_user WHERE user_id = #{id}
+	</delete>
+	
+	<!-- 插入用户和角色关联表数据 -->
+	<insert id="insertUserRole">
+		INSERT INTO sys_role_user(user_id, role_id)
+		<foreach collection="roleList" item="role" separator=" union all ">
+			SELECT #{id}, #{role.id}
+			<if test="dbName != 'mssql'">
+			FROM dual
+			</if>
+		</foreach>
+	</insert>
+	
+	<!-- 更新用户信息  -->
+	<update id="updateUserInfo">
+		UPDATE sys_user SET
+			login_name= #{loginName},
+			name = #{name},
+			img = #{img},
+			update_by = #{updateBy.id},
+			update_at = #{updateAt}
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 更新用户密码 -->
+	<update id="updatePasswordById">
+		UPDATE sys_user SET
+			password = #{password},
+			update_by = #{updateBy.id},
+			update_at = #{updateAt}
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 更新登录信息，如登录IP、登录时间 -->
+	<update id="updateLoginInfo">
+		UPDATE sys_user SET
+			last_login_ip = #{lastLoginIp},
+			last_login_at = #{lastLoginAt},
+			this_login_ip = #{thisLoginIp},
+			this_login_at = #{thisLoginAt}
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 逻辑删除用户 -->
+	<update id="delete">
+		UPDATE sys_user SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

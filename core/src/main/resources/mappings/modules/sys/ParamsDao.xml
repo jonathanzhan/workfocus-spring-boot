@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  Copyright  2014-2016 whatlookingfor@gmail.com(Jonathan)
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.whatlookingfor.modules.sys.dao.ParamsDao">
+
+    <select id="findList" resultType="com.whatlookingfor.modules.sys.entity.Params">
+        SELECT *
+        FROM sys_params
+        WHERE is_enabled= #{DEL_FLAG_NORMAL}
+        <if test="paramName!=null and paramName!=''">
+            AND param_name LIKE CONCAT('%',#{paramName},'%')
+        </if>
+    </select>
+
+    <select id="getParamById" resultType="com.whatlookingfor.modules.sys.entity.Params" parameterType="String">
+        SELECT
+          *
+        FROM sys_params a
+        WHERE a.param_name = #{paramName}
+    </select>
+
+    <insert id="save" >
+        INSERT INTO sys_params
+        (
+        param_name ,
+        param_value ,
+        param_label ,
+        is_enabled ,
+        creator ,
+        create_at ,
+        modifier ,
+        modify_at
+        )
+        VALUES
+        (
+        #{paramName} ,
+        #{paramValue} ,
+        #{paramLabel} ,
+        #{isEnabled} ,
+        #{creator.id} ,
+        #{createAt} ,
+        #{modifier.id} ,
+        #{modifyAt}
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE sys_params
+        SET param_value = #{paramValue},param_label = #{paramLabel},modifier =  #{modifier.id},modify_at = #{modifyAt}
+        WHERE param_name=#{paramName}
+    </update>
+    <update id="updateValueByName">
+        update sys_params SET param_value = #{paramValue},modify_at = now()
+        where param_name=#{paramName}
+    </update>
+
+    <select id="findParamNameList" resultType="string">
+        SELECT
+        param_name
+        FROM sys_params
+        WHERE is_enabled = 0
+    </select>
+
+    <delete id="delete">
+        UPDATE sys_params
+        SET is_enabled = #{DEL_FLAG_DELETE}
+        WHERE param_name=#{paramName}
+    </delete>
+
+</mapper>

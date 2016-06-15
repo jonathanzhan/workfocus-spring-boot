@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  Copyright  2014-2016 whatlookingfor@gmail.com(Jonathan)
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.whatlookingfor.modules.sys.dao.RoleDao">
+    
+    <resultMap id="roleResult" type="com.whatlookingfor.modules.sys.entity.Role">
+		<id property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="ename" column="ename" />
+		<result property="isSys" column="is_sys" />
+		<result property="roleType" column="role_type" />
+		<result property="dataScope" column="data_scope" />
+		<collection property="menuList" ofType="com.whatlookingfor.modules.sys.entity.Menu">
+			<id property="id" column="menuList.id" />
+		</collection>
+		<collection property="orgList" ofType="com.whatlookingfor.modules.sys.entity.Org">
+			<id property="id" column="orgList.id" />
+			<result property="name" column="orgList.name"/>
+		</collection>
+	</resultMap>
+	
+    <sql id="roleColumns">
+    	a.id,
+    	a.name,
+    	a.ename,
+    	a.is_sys,
+    	a.role_type,
+    	a.data_scope
+    </sql>
+    
+	<select id="get" resultMap="roleResult">
+		SELECT
+			<include refid="roleColumns"/>,
+			rm.menu_id AS "menuList.id",
+			ro.org_id AS "orgList.id",
+			o.name as "orgList.name"
+		FROM sys_role a
+		LEFT JOIN sys_role_menu rm ON rm.role_id = a.id
+		LEFT JOIN sys_role_org ro ON ro.role_id = a.id
+		LEFT JOIN sys_org o on o.id = ro.org_id
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getByName" resultType="com.whatlookingfor.modules.sys.entity.Role">
+		SELECT
+			<include refid="roleColumns"/>
+		FROM sys_role a
+		WHERE a.name = #{name} AND a.del_flag = #{DEL_FLAG_NORMAL}
+	</select>
+	
+	<select id="getByEname" resultType="com.whatlookingfor.modules.sys.entity.Role">
+		SELECT
+			<include refid="roleColumns"/>
+		FROM sys_role a
+		WHERE a.ename = #{ename} AND a.del_flag = #{DEL_FLAG_NORMAL}
+	</select>
+	
+	<select id="findList" resultMap="roleResult">
+		SELECT
+			<include refid="roleColumns"/>,
+			ro.org_id AS "orgList.id"
+		FROM sys_role a
+		LEFT JOIN sys_role_user ur ON ur.role_id = a.id
+		LEFT JOIN sys_user u ON u.id = ur.user_id
+		LEFT JOIN sys_role_org ro ON ro.role_id = a.id
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
+		<if test="user != null and user.id != null and user.id != ''">
+			AND u.id = #{user.id}
+		</if>
+		<if test="user != null and user.loginName != null and user.loginName != ''">
+			AND u.login_name = #{user.loginName}
+		</if>
+		<!--&lt;!&ndash; 数据范围过滤 &ndash;&gt;-->
+		<!--${sqlMap.dsf}-->
+		ORDER BY  a.name
+	</select>
+	
+	<select id="findAllList" resultType="com.whatlookingfor.modules.sys.entity.Role">
+		SELECT
+			<include refid="roleColumns"/>
+		FROM sys_role a
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
+		ORDER BY a.name
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO sys_role(
+			id,
+			name,
+			ename,
+			is_sys,
+			del_flag,
+			role_type,
+			data_scope,
+			create_by,
+			create_at,
+			update_by,
+			update_at
+		) VALUES (
+			#{id},
+			#{name},
+			#{ename},
+			#{isSys},
+			#{delFlag},
+			#{roleType},
+			#{dataScope},
+			#{createBy.id},
+			#{createAt},
+			#{updateBy.id},
+			#{updateAt}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE sys_role SET
+			name = #{name},
+			ename = #{ename},
+			is_sys = #{isSys},
+			data_scope = #{dataScope},
+			role_type = #{roleType},
+			update_by = #{updateBy.id},
+			update_at = #{updateAt}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="deleteRoleMenu">
+		DELETE FROM sys_role_menu WHERE role_id = #{id}
+	</delete>
+	
+	<insert id="insertRoleMenu">
+		INSERT INTO sys_role_menu(role_id, menu_id)
+		<foreach collection="menuList" item="menu" separator=" union all ">
+			SELECT #{id}, #{menu.id}
+			<if test="dbName != 'mssql'">
+			FROM dual
+			</if>
+		</foreach>
+	</insert>
+
+
+	<delete id="deleteRoleOrg">
+		DELETE FROM sys_role_org WHERE role_id = #{id}
+	</delete>
+
+	<insert id="insertRoleOrg">
+		INSERT INTO sys_role_org(role_id, org_id)
+		<foreach collection="orgList" item="org" separator=" union all ">
+			SELECT #{id}, #{org.id}
+			<if test="dbName != 'mssql'">
+				FROM dual
+			</if>
+		</foreach>
+	</insert>
+
+
+	<update id="delete">
+		UPDATE sys_role SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

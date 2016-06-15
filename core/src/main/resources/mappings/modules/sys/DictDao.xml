@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  Copyright  2014-2016 whatlookingfor@gmail.com(Jonathan)
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.whatlookingfor.modules.sys.dao.DictDao">
+
+
+	<select id="get" resultType="com.whatlookingfor.modules.sys.entity.Dict">
+		SELECT 
+			* 
+		FROM sys_dict
+		WHERE id = #{id}
+	</select>
+
+
+	<select id="findList" resultType="com.whatlookingfor.modules.sys.entity.Dict">
+		SELECT 
+			* 
+		FROM sys_dict
+		WHERE del_flag = #{DEL_FLAG_NORMAL}
+		<if test="type != null and type != ''">
+			AND type = #{type}
+		</if>
+		<if test="description != null and description != ''">
+			AND description LIKE
+					<if test="dbName == 'oracle'">'%'||#{description}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{description}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{description}, '%')</if>
+		</if>
+		ORDER BY type, seq, update_at DESC
+	</select>
+	
+	<select id="findAllList" resultType="com.whatlookingfor.modules.sys.entity.Dict">
+		SELECT 
+			* 
+		FROM sys_dict
+		WHERE del_flag = #{DEL_FLAG_NORMAL}
+		ORDER BY type, seq, update_at DESC
+	</select>
+	
+	<select id="findTypeList" resultType="string">
+		SELECT 
+			type
+		FROM sys_dict
+		WHERE del_flag = #{DEL_FLAG_NORMAL}
+		GROUP BY type
+		ORDER BY type
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO sys_dict(
+			id, 
+			value, 
+			label, 
+			type,
+			description,
+			seq,
+			sys_flag,
+			create_by,
+			create_at,
+			update_by,
+			update_at,
+			del_flag
+		) VALUES (
+			#{id}, 
+			#{value}, 
+			#{label}, 
+			#{type},
+			#{description},
+			#{seq},
+			#{sysFlag},
+			#{createBy.id},
+			#{createAt},
+			#{updateBy.id},
+			#{updateAt},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE sys_dict SET
+			value = #{value}, 
+			label = #{label}, 
+			type = #{type},
+			description = #{description},
+			seq = #{seq},
+			update_by = #{updateBy.id},
+			update_at = #{updateAt}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE sys_dict SET
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

@@ -1,0 +1,102 @@
+/*分页样式*/
+.pagination{
+    margin: 10px 0;
+}
+.pagination .controls a{border:0;margin-left:1px;}
+.pagination .controls input{border:0;color:#999;width:30px;padding:0;margin:-3px 0 0 0;text-align:center;}
+
+.required-block{
+    display: block;
+    margin-top: 7px;
+    margin-bottom: 1px;
+    color: #ed5565;
+    font-size: large;
+}
+
+.ibox-title a{
+    color: inherit;
+}
+
+/*设置必填的*/
+.form-group .input-group{
+    width: 95%;
+}
+
+.form-group .input-group .form-control{
+    width: 100%;
+}
+
+.form-group .form-control{
+    width: 95%;
+}
+
+.required-wrapper{
+    width: 1%;
+    white-space: nowrap;
+    vertical-align: middle;
+    display: inline-block;
+    font-size: 17px;
+    line-height: 1;
+    text-align: center;
+    color: #ea644a;
+    font-weight: bold;
+}
+.form-group {
+    margin-bottom: 10px;
+}
+
+/*弹出层的固定底部*/
+.layerBottom{
+    position:fixed;
+    width:100%;
+    bottom:0;
+    right:0;
+    padding: 10px;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    z-index: 100000;
+    background: none repeat scroll 0 0 white;
+}
+
+.layerContent{
+    padding-bottom: 70px
+}
+
+
+/*左右收放*/
+#left,#right,#openClose {float:left;} #openClose {width:6px;margin:0 1px;cursor:pointer;}
+#openClose,#openClose.close {background:#efefef url("../img/openclose.png") no-repeat -29px center;}
+#openClose.close {background-position:1px center;opacity:0.5;filter:alpha(opacity=50)}
+
+
+
+/*样式设置*/
+.theme-config {
+    position: absolute;
+    top: 110px;
+    right: 40px;
+    transition-duration: 0.8s;
+}
+
+.theme-config.show {
+    right: 300px;
+}
+
+.spin-icon {
+    background: #1ab394;
+    position: absolute;
+    padding: 7px 10px 7px 13px;
+    border-radius: 20px 0px 0px 20px;
+    font-size: 16px;
+    top: 0;
+    left: 0px;
+    width: 40px;
+    color: #fff;
+    cursor: pointer;
+    z-index: 2000;
+}
+
+
+table thead tr th.check-all{
+    cursor: pointer;
+}
