@@ -16,29 +16,28 @@
 
 package com.whatlookingfor.tag.freemarker.utils;
 
-import freemarker.template.ObjectWrapper;
-import freemarker.template.SimpleHash;
+import com.whatlookingfor.modules.sys.entity.Menu;
+import com.whatlookingfor.modules.sys.utils.UserUtils;
+import com.whatlookingfor.tag.freemarker.base.BaseTemplateMethodModel;
+import freemarker.template.*;
+
+import java.util.List;
 
 /**
+ * TODO
  *
- * fns标签库的集合,作用是初始化fns标签库的集合有哪些
  * @author Jonathan
- * @version 2016/6/12 12:58
+ * @version 2016/6/15 18:31
  * @since JDK 7.0+
  */
-public class FnsTags extends SimpleHash {
+public class GetMenuListByLevelTag extends BaseTemplateMethodModel{
+	@Override
+	public TemplateModel exec(List args) throws TemplateModelException {
+		SimpleNumber start = (SimpleNumber)args.get(0);
+		SimpleNumber end = (SimpleNumber)args.get(1);
 
-	public FnsTags(ObjectWrapper wrapper) {
-		super(wrapper);
-		put("config",new GlobalConfigTag());
-		put("abbr",new AbbrTag());
-		put("dictList",new DictListTag());
-		put("getMenuTree",new GetMenuTreeTag());
-		put("getMenuListByLevel",new GetMenuListByLevelTag());
+		List<Menu> list = UserUtils.getMenuListByLevel(start.getAsNumber().intValue(),end.getAsNumber().intValue());
+		SimpleCollection simpleCollection = getSimpleCollection(list);
+		return simpleCollection;
 	}
-
-//	public FnsTags(){
-//
-//	}
-
 }

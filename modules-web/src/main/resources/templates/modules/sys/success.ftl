@@ -1,8 +1,8 @@
-<#include "../../include/taglib.ftl">
+<#include "../../include/taglib.ftl"/>
 <!DOCTYPE html>
 <html>
 <head>
-<#include "../../include/head.ftl">
+    <#include "../../include/head.ftl"/>
     <link href="${ctxStatic}/css/login.css" rel="stylesheet">
     <title> 登录</title>
 </head>

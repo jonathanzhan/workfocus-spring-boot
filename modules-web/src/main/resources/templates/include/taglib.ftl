@@ -1,2 +1,2 @@
-<#assign ctx = request.contextPath >
-<#assign ctxStatic = "${ctx}/static">
+<#assign ctx = "${request.contextPath}${fns.config('adminPath')}">
+<#assign ctxStatic = "${request.contextPath}/static">

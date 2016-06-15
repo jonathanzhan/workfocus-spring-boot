@@ -17,6 +17,7 @@
 package com.whatlookingfor.tag.freemarker.base;
 
 import com.whatlookingfor.tag.freemarker.utils.FnsTags;
+import freemarker.template.DefaultObjectWrapperBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
@@ -38,6 +39,7 @@ public class FreeMarkerConfig {
 
 	@PostConstruct
 	public void setSharedVariable(){
-		configuration.setSharedVariable("fns",new FnsTags());
+//		configuration.getObjectWrapper()
+		configuration.setSharedVariable("fns",new FnsTags(new DefaultObjectWrapperBuilder(freemarker.template.Configuration.VERSION_2_3_23).build()));
 	}
 }

@@ -38,15 +38,15 @@
 	                <li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> ${fns.config('adminPath')}</li>
 	                <li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> ${fns.abbr('adminPath2321321312',5)}</li>
 
-                    <#list fns.dictList('asd') as demo>
-	                    <li><i class="fa fa-arrow-circle-o-right m-r-xs"></i>${demo.name}</li>
+                    <#list fns.dictList('sys_user_type') as demo>
+	                    <li><i class="fa fa-arrow-circle-o-right m-r-xs"></i>${demo.label}</li>
                     </#list>
                 </ul>
                 <strong>还没有账号？ <a href="#">立即注册&raquo;</a></strong>
             </div>
         </div>
         <div class="col-sm-5">
-            <form method="post" action="${ctx}/a/login">
+            <form method="post" action="${ctx}/login">
                 <h4 class="no-margins">登录</h4>
                 <p class="m-t-md">登录到后台主题UI框架</p>
                 <input type="text" id="username" name="username" class="form-control uname" placeholder="用户名" required />

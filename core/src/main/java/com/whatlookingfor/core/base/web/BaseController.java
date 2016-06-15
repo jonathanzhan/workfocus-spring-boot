@@ -50,7 +50,7 @@ public abstract class BaseController {
 	/**
 	 * 前端URL后缀
 	 */
-	@Value("${urlSuffix}")
+	@Value("${spring.mvc.view.prefix}")
 	protected String urlSuffix;
 	
 	/**

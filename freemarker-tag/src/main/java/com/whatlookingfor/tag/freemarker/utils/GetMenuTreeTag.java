@@ -16,37 +16,32 @@
 
 package com.whatlookingfor.tag.freemarker.utils;
 
-import com.whatlookingfor.modules.sys.entity.Dict;
-import com.whatlookingfor.modules.sys.utils.DictUtils;
+import com.whatlookingfor.modules.sys.entity.Menu;
+import com.whatlookingfor.modules.sys.utils.UserUtils;
 import com.whatlookingfor.tag.freemarker.base.BaseTemplateMethodModel;
 import freemarker.template.SimpleCollection;
+import freemarker.template.SimpleNumber;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 
 import java.util.List;
 
 /**
- * 根据数据字典类型获取数据字典的数据
- *
+ * 根据开始级别以及截至级别，获取菜单的树形结构的数据
+ * 参数:start 开始级别  end:截止级别
  * @author Jonathan
- * @version 2016/6/12 14:25
+ * @version 2016/6/15 17:48
  * @since JDK 7.0+
  */
-public class DictListTag extends BaseTemplateMethodModel{
+public class GetMenuTreeTag extends BaseTemplateMethodModel{
 
 	@Override
 	public TemplateModel exec(List args) throws TemplateModelException {
-		String type = args.get(0).toString();
-//		SimpleSequence simpleSequence = getSimpleSequence();
-//		List<Demo> list = Lists.newArrayList();
-//		list.add(new Demo("1","张三"));
-//		list.add(new Demo("2","李四"));
-//		simpleSequence.add(list);
-		List<Dict> dictList = DictUtils.getDictList(type);
+		SimpleNumber start = (SimpleNumber)args.get(0);
+		SimpleNumber end = (SimpleNumber)args.get(1);
 
-		SimpleCollection simpleCollection = getSimpleCollection(dictList);
-
-
+		List<Menu> list = UserUtils.getMenuTree(start.getAsNumber().intValue(),end.getAsNumber().intValue());
+		SimpleCollection simpleCollection = getSimpleCollection(list);
 		return simpleCollection;
 	}
 }

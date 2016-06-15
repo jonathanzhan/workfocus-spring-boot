@@ -14,31 +14,11 @@
  * limitations under the License.
  */
 
-package com.whatlookingfor.tag.freemarker.utils;
-
-import freemarker.template.ObjectWrapper;
-import freemarker.template.SimpleHash;
-
 /**
+ * TODO
  *
- * fns标签库的集合,作用是初始化fns标签库的集合有哪些
  * @author Jonathan
- * @version 2016/6/12 12:58
+ * @version 2016/6/15 18:30
  * @since JDK 7.0+
  */
-public class FnsTags extends SimpleHash {
-
-	public FnsTags(ObjectWrapper wrapper) {
-		super(wrapper);
-		put("config",new GlobalConfigTag());
-		put("abbr",new AbbrTag());
-		put("dictList",new DictListTag());
-		put("getMenuTree",new GetMenuTreeTag());
-		put("getMenuListByLevel",new GetMenuListByLevelTag());
-	}
-
-//	public FnsTags(){
-//
-//	}
-
-}
+package com.whatlookingfor.tag.freemarker.tools;
