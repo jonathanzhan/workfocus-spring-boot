@@ -82,12 +82,12 @@
 			                    </a>
                             <#else >
                                 <#if menu.href?index_of('://')!=-1>
-                                    <a class="J_menuItem" href="${ctx}${menu.href}">
+                                    <a class="J_menuItem" href="${menu.href}">
 	                                    <i class="${menu.icon}"></i>
 	                                    <span>${menu.name}</span>
                                     </a>
                                 <#else>
-                                    <a class="J_menuItem" href="${menu.href}">
+                                    <a class="J_menuItem" href="${ctx}${menu.href}">
 	                                    <i class="${menu.icon}"></i>
 	                                    <span>${menu.name}</span>
                                     </a>
@@ -99,12 +99,12 @@
                                         <#if child.isShow=='1'>
 	                                        <li>
                                                 <#if child.href?index_of('://')!=-1>
-			                                        <a class="J_menuItem" href="${ctx}${child.href}">
+			                                        <a class="J_menuItem" href="${child.href}">
 				                                        <i class="${child.icon}"></i>
 				                                        <span>${child.name}</span>
 			                                        </a>
                                                 <#else>
-			                                        <a class="J_menuItem" href="${child.href}">
+			                                        <a class="J_menuItem" href="${ctx}${child.href}">
 				                                        <i class="${child.icon}"></i>
 				                                        <span>${child.name}</span>
 			                                        </a>
@@ -151,11 +151,11 @@
                                         </a>
                                     <#else>
                                         <#if menu.href?index_of('://')!=-1>
-		                                    <a class="first-menu1 J_menuItem" data-id="${menu.id}" href="${ctx}${menu.href}">
+		                                    <a class="first-menu1 J_menuItem" data-id="${menu.id}" href="${menu.href}">
 			                                    <i class="${menu.icon}"></i><span>${menu.name}</span>
 		                                    </a>
                                         <#else>
-		                                    <a class="first-menu1 J_menuItem" data-id="${menu.id}" href="${menu.href}">
+		                                    <a class="first-menu1 J_menuItem" data-id="${menu.id}" href="${ctx}${menu.href}">
 			                                    <i class="${menu.icon}"></i><span>${menu.name}</span>
 		                                    </a>
                                         </#if>
@@ -531,7 +531,7 @@
 
 
 </div>
-<%--主题设置--%>
+<#--主题设置-->
 <div class="theme-config">
     <div class="spin-icon">
         <i class="fa fa-cog fa-spin"></i>
