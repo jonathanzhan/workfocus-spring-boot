@@ -16,6 +16,7 @@
 
 package com.whatlookingfor;
 
+import com.whatlookingfor.core.config.StartUpListener;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -41,12 +42,12 @@ public class Application {
 
 
 	public static void main(String[] args) {
-//		SpringApplication springApplication = new SpringApplication(Application.class);
-//		//添加项目启动的监听类
-//		springApplication.addListeners(new StartUpListener());
-//		springApplication.run(args);
+		SpringApplication springApplication = new SpringApplication(Application.class);
+		//添加项目启动的监听类
+		springApplication.addListeners(new StartUpListener());
+		springApplication.run(args);
 
-		SpringApplication.run(Application.class, args);
+//		SpringApplication.run(Application.class, args);
 	}
 
 
