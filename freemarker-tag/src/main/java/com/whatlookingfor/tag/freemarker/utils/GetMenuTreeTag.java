@@ -16,8 +16,8 @@
 
 package com.whatlookingfor.tag.freemarker.utils;
 
+import com.google.common.collect.Lists;
 import com.whatlookingfor.modules.sys.entity.Menu;
-import com.whatlookingfor.modules.sys.utils.UserUtils;
 import com.whatlookingfor.tag.freemarker.base.BaseTemplateMethodModel;
 import freemarker.template.SimpleCollection;
 import freemarker.template.SimpleNumber;
@@ -40,7 +40,7 @@ public class GetMenuTreeTag extends BaseTemplateMethodModel{
 		SimpleNumber start = (SimpleNumber)args.get(0);
 		SimpleNumber end = (SimpleNumber)args.get(1);
 
-		List<Menu> list = UserUtils.getMenuTree(start.getAsNumber().intValue(),end.getAsNumber().intValue());
+		List<Menu> list = Lists.newArrayList();
 		SimpleCollection simpleCollection = getSimpleCollection(list);
 		return simpleCollection;
 	}

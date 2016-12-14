@@ -6,7 +6,7 @@ package com.whatlookingfor.common.utils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.whatlookingfor.common.config.Global;
+import com.whatlookingfor.core.config.Global;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import redis.clients.jedis.Jedis;

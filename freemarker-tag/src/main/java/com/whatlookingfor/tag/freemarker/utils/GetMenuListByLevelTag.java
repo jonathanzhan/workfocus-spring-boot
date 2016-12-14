@@ -16,10 +16,13 @@
 
 package com.whatlookingfor.tag.freemarker.utils;
 
+import com.google.common.collect.Lists;
 import com.whatlookingfor.modules.sys.entity.Menu;
-import com.whatlookingfor.modules.sys.utils.UserUtils;
 import com.whatlookingfor.tag.freemarker.base.BaseTemplateMethodModel;
-import freemarker.template.*;
+import freemarker.template.SimpleCollection;
+import freemarker.template.SimpleNumber;
+import freemarker.template.TemplateModel;
+import freemarker.template.TemplateModelException;
 
 import java.util.List;
 
@@ -31,12 +34,13 @@ import java.util.List;
  * @since JDK 7.0+
  */
 public class GetMenuListByLevelTag extends BaseTemplateMethodModel{
+
 	@Override
 	public TemplateModel exec(List args) throws TemplateModelException {
 		SimpleNumber start = (SimpleNumber)args.get(0);
 		SimpleNumber end = (SimpleNumber)args.get(1);
 
-		List<Menu> list = UserUtils.getMenuListByLevel(start.getAsNumber().intValue(),end.getAsNumber().intValue());
+		List<Menu> list = Lists.newArrayList();
 		SimpleCollection simpleCollection = getSimpleCollection(list);
 		return simpleCollection;
 	}

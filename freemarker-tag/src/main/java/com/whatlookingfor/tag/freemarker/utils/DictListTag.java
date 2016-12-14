@@ -16,8 +16,8 @@
 
 package com.whatlookingfor.tag.freemarker.utils;
 
+import com.google.common.collect.Lists;
 import com.whatlookingfor.modules.sys.entity.Dict;
-import com.whatlookingfor.modules.sys.utils.DictUtils;
 import com.whatlookingfor.tag.freemarker.base.BaseTemplateMethodModel;
 import freemarker.template.SimpleCollection;
 import freemarker.template.TemplateModel;
@@ -42,7 +42,7 @@ public class DictListTag extends BaseTemplateMethodModel{
 //		list.add(new Demo("1","张三"));
 //		list.add(new Demo("2","李四"));
 //		simpleSequence.add(list);
-		List<Dict> dictList = DictUtils.getDictList(type);
+		List<Dict> dictList = Lists.newArrayList();
 
 		SimpleCollection simpleCollection = getSimpleCollection(dictList);
 

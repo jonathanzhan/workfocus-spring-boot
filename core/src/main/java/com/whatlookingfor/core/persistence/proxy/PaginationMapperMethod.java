@@ -3,7 +3,7 @@
  */
 package com.whatlookingfor.core.persistence.proxy;
 
-import com.whatlookingfor.core.persistence.Page;
+import com.whatlookingfor.core.base.entity.Page;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.binding.BindingException;
 import org.apache.ibatis.mapping.MappedStatement;

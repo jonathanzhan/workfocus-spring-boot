@@ -16,7 +16,7 @@
 
 package com.whatlookingfor.tag.freemarker.utils;
 
-import com.whatlookingfor.common.config.Global;
+import com.whatlookingfor.core.config.Global;
 import com.whatlookingfor.tag.freemarker.base.BaseTemplateMethodModel;
 import freemarker.template.SimpleScalar;
 import freemarker.template.TemplateModel;
@@ -26,7 +26,7 @@ import java.util.List;
 
 /**
  * 获取系统的一些配置参数
- * @see com.whatlookingfor.common.config.Global
+ * @see com.whatlooingfor.core.config.Global
  * @author Jonathan
  * @version 2016/6/12 10:58
  * @since JDK 7.0+

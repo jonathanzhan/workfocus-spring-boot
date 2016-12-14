@@ -3,7 +3,7 @@
  */
 package com.whatlookingfor.core.persistence.interceptor;
 
-import com.whatlookingfor.core.persistence.Page;
+import com.whatlookingfor.core.base.entity.Page;
 import com.whatlookingfor.common.utils.Reflections;
 import com.whatlookingfor.common.utils.StringUtils;
 import org.apache.ibatis.executor.Executor;

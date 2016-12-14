@@ -2,8 +2,7 @@
  * Copyright &copy; 2012-2014 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
  */
 package com.whatlookingfor.core.persistence.interceptor;
-
-import com.whatlookingfor.core.persistence.Page;
+import com.whatlookingfor.core.base.entity.Page;
 import com.whatlookingfor.common.utils.Reflections;
 import org.apache.ibatis.executor.statement.BaseStatementHandler;
 import org.apache.ibatis.executor.statement.RoutingStatementHandler;

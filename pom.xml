@@ -40,7 +40,9 @@
 		<module>common-tools</module>
 		<module>core</module>
 		<module>freemarker-tag</module>
-		<module>modules-web</module>
+		<module>sys-api</module>
+		<module>sys-service</module>
+		<module>sys-web</module>
 	</modules>
 
 	<properties>

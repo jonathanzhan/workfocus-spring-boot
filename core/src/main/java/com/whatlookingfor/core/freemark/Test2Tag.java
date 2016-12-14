@@ -16,13 +16,9 @@
 
 package com.whatlookingfor.core.freemark;
 
-import com.google.common.collect.Lists;
-import com.whatlookingfor.modules.sys.entity.User;
-import freemarker.ext.beans.BeansWrapperBuilder;
-import freemarker.ext.beans.StringModel;
+import com.whatlookingfor.core.base.entity.BaseUser;
 import freemarker.template.*;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -35,10 +31,10 @@ import java.util.List;
 public class Test2Tag implements TemplateMethodModelEx{
 	@Override
 	public TemplateModel exec(List args) throws TemplateModelException {
-		User user1=new User();
+		BaseUser user1=new BaseUser();
 		user1.setName("asdas");
 
-		User user2=new User();
+		BaseUser user2=new BaseUser();
 		user2.setName("qqqq");
 		SimpleSequence userList=new SimpleSequence(new DefaultObjectWrapperBuilder(Configuration.VERSION_2_3_23).build());
 		userList.add(user1);

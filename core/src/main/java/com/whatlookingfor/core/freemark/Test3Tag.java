@@ -16,14 +16,9 @@
 
 package com.whatlookingfor.core.freemark;
 
-import com.google.common.collect.Maps;
-import com.whatlookingfor.modules.sys.entity.User;
-import freemarker.ext.beans.BeansWrapperBuilder;
 import freemarker.template.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * TODO

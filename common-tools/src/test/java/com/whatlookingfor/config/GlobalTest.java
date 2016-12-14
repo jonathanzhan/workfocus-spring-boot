@@ -16,7 +16,7 @@
 
 package com.whatlookingfor.config;
 
-import com.whatlookingfor.common.config.Global;
+import com.whatlookingfor.core.config.Global;
 import org.junit.Assert;
 import org.junit.Test;
 

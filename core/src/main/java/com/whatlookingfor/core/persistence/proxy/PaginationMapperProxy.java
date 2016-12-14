@@ -3,8 +3,8 @@
  */
 package com.whatlookingfor.core.persistence.proxy;
 
-import com.whatlookingfor.core.persistence.Page;
 import com.whatlookingfor.common.utils.Reflections;
+import com.whatlookingfor.core.base.entity.Page;
 import org.apache.ibatis.binding.BindingException;
 import org.apache.ibatis.binding.MapperMethod;
 import org.apache.ibatis.session.SqlSession;

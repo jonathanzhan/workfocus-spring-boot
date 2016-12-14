@@ -4,8 +4,8 @@
 package com.whatlookingfor.core.persistence.interceptor;
 
 
-import com.whatlookingfor.common.config.Global;
-import com.whatlookingfor.core.persistence.Page;
+import com.whatlookingfor.core.config.Global;
+import com.whatlookingfor.core.base.entity.Page;
 import com.whatlookingfor.core.persistence.dialect.Dialect;
 import com.whatlookingfor.core.persistence.dialect.db.*;
 import com.whatlookingfor.common.utils.Reflections;

@@ -4,7 +4,7 @@
 package com.whatlookingfor.core.security.shiro.session;
 
 import com.google.common.collect.Sets;
-import com.whatlookingfor.common.config.Global;
+import com.whatlookingfor.core.config.Global;
 import com.whatlookingfor.common.utils.DateUtils;
 import com.whatlookingfor.common.utils.StringUtils;
 import com.whatlookingfor.core.base.web.Servlets;
@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Set;
 
 /**
@@ -149,7 +150,7 @@ public class CacheSessionDAO extends EnterpriseCacheSessionDAO implements Sessio
 		for (Session session : getActiveSessions()){
 			boolean isActiveSession = false;
 			// 不包括离线并符合最后访问时间小于等于3分钟条件。
-			if (includeLeave || DateUtils.pastMinutes(session.getLastAccessTime()) <= 3){
+			if (includeLeave || DateUtils.pastMinutes(session.getLastAccessTime(),new Date()) <= 3){
 				isActiveSession = true;
 			}
 			// 符合登陆者条件。
