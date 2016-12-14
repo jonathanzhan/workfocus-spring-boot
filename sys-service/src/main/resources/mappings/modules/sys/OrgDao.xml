@@ -43,7 +43,7 @@
 		LEFT JOIN sys_org p ON p.id = a.parent_id
     </sql>
 	
-	<select id="get" resultType="com.whatlookingfor.modules.sys.entity.Org">
+	<select id="get" resultType="Org">
 		SELECT
 			<include refid="orgColumns"/>
 		FROM sys_org a
@@ -51,7 +51,7 @@
 		WHERE a.id = #{id}
 	</select>
 	
-	<select id="findList" resultType="com.whatlookingfor.modules.sys.entity.Org">
+	<select id="findList" resultType="Org">
 		SELECT
 			<include refid="orgColumns"/>
 		FROM sys_org a
@@ -60,7 +60,7 @@
 		ORDER BY a.code
 	</select>
 			
-	<select id="findAllList" resultType="com.whatlookingfor.modules.sys.entity.Org">
+	<select id="findAllList" resultType="Org">
 		SELECT
 			<include refid="orgColumns"/>
 		FROM sys_org a
@@ -69,7 +69,7 @@
 		ORDER BY a.code
 	</select>
 	
-	<select id="findByParentIdsLike" resultType="com.whatlookingfor.modules.sys.entity.Org">
+	<select id="findByParentIdsLike" resultType="Org">
 		SELECT
 			<include refid="orgColumns"/>
 		FROM sys_org a

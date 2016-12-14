@@ -50,7 +50,7 @@
     </sql>
 	
 	<!-- 根据编号获得用户 -->
-	<select id="get" resultType="com.whatlookingfor.modules.sys.entity.User">
+	<select id="get" resultType="User">
 		SELECT
 			<include refid="userColumns"/>
 		FROM sys_user a
@@ -67,7 +67,7 @@
 	</select>
 	
 	<!-- 分页查询用户信息 -->
-	<select id="findList" resultType="com.whatlookingfor.modules.sys.entity.User">
+	<select id="findList" resultType="User">
 		SELECT
 			<include refid="userColumns"/>
 		FROM sys_user a
@@ -130,7 +130,7 @@
 
 	
 	<!-- 查询全部用户 -->
-	<select id="findAllList" resultType="com.whatlookingfor.modules.sys.entity.User">
+	<select id="findAllList" resultType="User">
 		SELECT
 			<include refid="userColumns"/>
 		FROM sys_user a

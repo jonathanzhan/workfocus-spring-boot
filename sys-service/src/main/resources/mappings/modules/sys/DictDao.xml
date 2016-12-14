@@ -19,7 +19,7 @@
 <mapper namespace="com.whatlookingfor.modules.sys.dao.DictDao">
 
 
-	<select id="get" resultType="com.whatlookingfor.modules.sys.entity.Dict">
+	<select id="get" resultType="Dict">
 		SELECT 
 			* 
 		FROM sys_dict
@@ -27,7 +27,7 @@
 	</select>
 
 
-	<select id="findList" resultType="com.whatlookingfor.modules.sys.entity.Dict">
+	<select id="findList" resultType="Dict">
 		SELECT 
 			* 
 		FROM sys_dict
@@ -44,7 +44,7 @@
 		ORDER BY type, seq, update_at DESC
 	</select>
 	
-	<select id="findAllList" resultType="com.whatlookingfor.modules.sys.entity.Dict">
+	<select id="findAllList" resultType="Dict">
 		SELECT 
 			* 
 		FROM sys_dict

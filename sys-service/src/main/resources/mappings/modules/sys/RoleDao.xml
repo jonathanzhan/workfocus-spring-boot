@@ -18,17 +18,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.whatlookingfor.modules.sys.dao.RoleDao">
     
-    <resultMap id="roleResult" type="com.whatlookingfor.modules.sys.entity.Role">
+    <resultMap id="roleResult" type="Role">
 		<id property="id" column="id" />
 		<result property="name" column="name" />
 		<result property="ename" column="ename" />
 		<result property="isSys" column="is_sys" />
 		<result property="roleType" column="role_type" />
 		<result property="dataScope" column="data_scope" />
-		<collection property="menuList" ofType="com.whatlookingfor.modules.sys.entity.Menu">
+		<collection property="menuList" ofType="Menu">
 			<id property="id" column="menuList.id" />
 		</collection>
-		<collection property="orgList" ofType="com.whatlookingfor.modules.sys.entity.Org">
+		<collection property="orgList" ofType="Org">
 			<id property="id" column="orgList.id" />
 			<result property="name" column="orgList.name"/>
 		</collection>
@@ -56,14 +56,14 @@
 		WHERE a.id = #{id}
 	</select>
 	
-	<select id="getByName" resultType="com.whatlookingfor.modules.sys.entity.Role">
+	<select id="getByName" resultType="Role">
 		SELECT
 			<include refid="roleColumns"/>
 		FROM sys_role a
 		WHERE a.name = #{name} AND a.del_flag = #{DEL_FLAG_NORMAL}
 	</select>
 	
-	<select id="getByEname" resultType="com.whatlookingfor.modules.sys.entity.Role">
+	<select id="getByEname" resultType="Role">
 		SELECT
 			<include refid="roleColumns"/>
 		FROM sys_role a
@@ -90,7 +90,7 @@
 		ORDER BY  a.name
 	</select>
 	
-	<select id="findAllList" resultType="com.whatlookingfor.modules.sys.entity.Role">
+	<select id="findAllList" resultType="Role">
 		SELECT
 			<include refid="roleColumns"/>
 		FROM sys_role a

@@ -42,7 +42,7 @@
 		LEFT JOIN sys_menu p ON p.id = a.parent_id
     </sql>
 	
-	<select id="get" resultType="com.whatlookingfor.modules.sys.entity.Menu">
+	<select id="get" resultType="Menu">
 		SELECT
 			<include refid="menuColumns"/>
 		FROM sys_menu a
@@ -50,7 +50,7 @@
 		WHERE a.id = #{id}
 	</select>
 	
-	<select id="findAllList" resultType="com.whatlookingfor.modules.sys.entity.Menu">
+	<select id="findAllList" resultType="Menu">
 		SELECT
 			<include refid="menuColumns"/>
 		FROM sys_menu a
@@ -68,7 +68,7 @@
 		ORDER BY a.seq
 	</select>
 	
-	<select id="findByParentIdsLike" resultType="com.whatlookingfor.modules.sys.entity.Menu">
+	<select id="findByParentIdsLike" resultType="Menu">
 		SELECT
 			a.id,
 			a.parent_id AS "parent.id",
@@ -78,7 +78,7 @@
 		ORDER BY a.seq
 	</select>
 	
-	<select id="findByUserId" resultType="com.whatlookingfor.modules.sys.entity.Menu">
+	<select id="findByUserId" resultType="Menu">
 		SELECT DISTINCT
 			<include refid="menuColumns"/>
 		FROM sys_menu a

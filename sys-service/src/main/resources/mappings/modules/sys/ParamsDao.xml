@@ -18,7 +18,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.whatlookingfor.modules.sys.dao.ParamsDao">
 
-    <select id="findList" resultType="com.whatlookingfor.modules.sys.entity.Params">
+    <select id="findList" resultType="Params">
         SELECT *
         FROM sys_params
         WHERE is_enabled= #{DEL_FLAG_NORMAL}
@@ -27,7 +27,7 @@
         </if>
     </select>
 
-    <select id="getParamById" resultType="com.whatlookingfor.modules.sys.entity.Params" parameterType="String">
+    <select id="getParamById" resultType="Params" parameterType="String">
         SELECT
           *
         FROM sys_params a
